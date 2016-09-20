@@ -1,0 +1,7 @@
+# Vagrant files
+/.vagrant
+/Vagrantfile
+
+# private files
+/profile.png
+line-config.php
