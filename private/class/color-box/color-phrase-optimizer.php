@@ -9,6 +9,10 @@ class ColorPhraseOptimizer {
    */
   private $source;
 
+  /**
+   * Constructor.
+   * @param [string] $source - The source for optimization
+   */
   function __construct($source) {
     $this->source = $this->removeWhiteSpace($source);
   }
