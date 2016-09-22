@@ -14,8 +14,7 @@ class ColorManager {
   private $color;
 
   /**
-   * The source of color data.
-   * @var [string] $colorSource - A color code
+   * @var [string] The source of color data
    */
   private $colorSource;
 
