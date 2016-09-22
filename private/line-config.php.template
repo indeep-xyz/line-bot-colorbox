@@ -1,0 +1,7 @@
+<?php
+
+define('__LINE_CHANNEL_ID__',            '<INPUT YOUR CHANNEL ID>');
+define('__LINE_CHANNEL_SECRET__',        '<INPUT YOUR CHANNEL SECRET>');
+define('__LINE_TRUSTED_USER_WITH_ACL__', '<INPUT YOUR MID>');
+
+define('__URL_COLOR_BOX__', '<INPUT URL FOR COLOR BOX>');
