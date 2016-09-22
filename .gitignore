@@ -4,4 +4,4 @@
 
 # private files
 /profile.png
-line-config.php
+private/config.php
