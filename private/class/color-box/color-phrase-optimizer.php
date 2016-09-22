@@ -4,6 +4,9 @@ namespace ColorBox;
 
 class ColorPhraseOptimizer {
 
+  /**
+   * @var [string] The source for optimization.
+   */
   private $source;
 
   function __construct($source) {
