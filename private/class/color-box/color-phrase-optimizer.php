@@ -2,6 +2,13 @@
 
 namespace ColorBox;
 
+/**
+ * This class supports to optimize a phrase for color code.
+ *
+ * @version  0.0.1
+ * @author   indeep-xyz
+ * @package  ColorBox
+ */
 class ColorPhraseOptimizer {
 
   /**
