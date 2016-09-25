@@ -4,6 +4,13 @@ namespace ColorBox;
 
 require_once(dirname(__FILE__) . '/color-manager.php');
 
+/**
+ * This class outputs a color box.
+ *
+ * @version  0.0.1
+ * @author   indeep-xyz
+ * @package  ColorBox
+ */
 class Out {
   const SIZE = 120;
   const FILE_TYPE = 'png';
