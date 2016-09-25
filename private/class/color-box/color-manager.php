@@ -4,6 +4,13 @@ namespace ColorBox;
 
 require_once(dirname(__FILE__) . '/color-phrase-optimizer.php');
 
+/**
+ * This class keeps color data.
+ *
+ * @version  0.0.1
+ * @author   indeep-xyz
+ * @package  ColorBox
+ */
 class ColorManager {
 
   /**
