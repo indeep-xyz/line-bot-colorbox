@@ -33,6 +33,9 @@ class Out {
     $this->initBox();
   }
 
+  /**
+   * Initialize an image which an instance has.
+   */
   private function initBox() {
     $box = new \Imagick();
     $box->newImage(self::SIZE, self::SIZE, $this->color);
