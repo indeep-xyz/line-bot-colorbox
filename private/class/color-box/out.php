@@ -44,6 +44,9 @@ class Out {
     $this->box = $box;
   }
 
+  /**
+   * Output an image which an instance has.
+   */
   public function output() {
     header(self::CONTENT_TYPE);
     echo $this->box;
