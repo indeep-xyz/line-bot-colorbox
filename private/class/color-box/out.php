@@ -17,7 +17,7 @@ class Out {
   const CONTENT_TYPE = 'Content-type: image/png';
 
   /**
-   * The image data
+   * An image as a box.
    * @var [Imagick]
    */
   private $box;
