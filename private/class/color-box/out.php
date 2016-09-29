@@ -52,6 +52,9 @@ class Out {
     echo $this->box;
   }
 
+  /**
+   * Check $this->box has created correctly.
+   */
   public function isOutputable() {
     return $this->box instanceof \Imagick;
   }
