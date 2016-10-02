@@ -44,16 +44,7 @@ class ColorManager {
    * when the instance creation is failed.
    */
   private function initColor() {
-    $color = null;
-
-    try {
-      $color = $this->createPixel($this->colorSource);
-    }
-    catch (ImagickPixelException $ex) {
-      ;
-    }
-
-    $this->color = $color;
+    $this->color = $this->createPixel($this->colorSource);
   }
 
   /**
@@ -68,7 +59,12 @@ class ColorManager {
     $color = null;
 
     if ($colorPhrase != '') {
-      $color = new \ImagickPixel($colorPhrase);
+      try {
+        $color = new \ImagickPixel($colorPhrase);;
+      }
+      catch (\ImagickPixelException $ex) {
+        ;
+      }
     }
 
     return $color;
