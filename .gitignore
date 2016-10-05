@@ -5,3 +5,4 @@
 # private files
 /profile.png
 private/config.php
+/*.sublime-*
