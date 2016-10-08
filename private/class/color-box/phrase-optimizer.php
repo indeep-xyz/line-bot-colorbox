@@ -9,7 +9,7 @@ namespace ColorBox;
  * @author   indeep-xyz
  * @package  ColorBox
  */
-class ColorPhraseOptimizer {
+class PhraseOptimizer {
 
   /**
    * @var [string] The source for optimization.

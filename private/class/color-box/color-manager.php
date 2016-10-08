@@ -2,7 +2,7 @@
 
 namespace ColorBox;
 
-require_once(dirname(__FILE__) . '/color-phrase-optimizer.php');
+require_once(dirname(__FILE__) . '/phrase-optimizer.php');
 
 /**
  * This class keeps color data.
@@ -54,7 +54,7 @@ class ColorManager {
    * @return [null] Returns null if a class can not optimize the argument
    */
   private function createPixel($colorSource) {
-    $phraseOptimizer = new ColorPhraseOptimizer($colorSource);
+    $phraseOptimizer = new PhraseOptimizer($colorSource);
     $colorPhrase = $phraseOptimizer->fromQueryString();
     $color = null;
 
