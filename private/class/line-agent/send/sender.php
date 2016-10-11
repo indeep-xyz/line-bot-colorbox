@@ -60,9 +60,9 @@ abstract class Sender {
   private function createHeader() {
     return array(
         'Content-Type: application/json; charser=UTF-8',
-        'X-Line-ChannelID: '             . $this->auth->channelId,
-        'X-Line-ChannelSecret: '         . $this->auth->channelSecret,
-        'X-Line-Trusted-User-With-ACL: ' . $this->auth->mid,
+        'X-Line-ChannelID: '             . $this->auth['channelId'],
+        'X-Line-ChannelSecret: '         . $this->auth['channelSecret'],
+        'X-Line-Trusted-User-With-ACL: ' . $this->auth['mid'],
     );
   }
 
