@@ -3,7 +3,8 @@
 require_once('../private/commons.php');
 require_once(__CLASS_ROOT__ . '/line-agent/reception.php');
 
-$agent = new \LineAgent\Reception(file_get_contents("php://input"));
+$jsonSource = file_get_contents("php://input");
+$agent = new \LineAgent\Reception($jsonSource);
 $replier = $agent->getReplier();
 
 if ($replier === null) {
