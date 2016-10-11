@@ -22,6 +22,11 @@ class Replier {
   protected $lineContent;
 
   /**
+   * @var [boolean]
+   */
+  protected $dryRun;
+
+  /**
    * Constructor.
    * @param [mixed] $lineContent - The content section of the converted data from LINE server
    */
