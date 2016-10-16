@@ -32,6 +32,12 @@ class ErrorSender extends Sender {
     return $body;
   }
 
+  /**
+   * Create an error message.
+   *
+   * @param  [string] $colorPhrase - Text which expresses a color
+   * @return [string] Return an error message
+   */
   private function createPostText($colorPhrase) {
     return $colorPhrase . ' は無効なカラーコードです';
   }
