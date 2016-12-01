@@ -7,19 +7,19 @@ namespace LineAgent\Reply;
  *
  * @author  indeep-xyz
  * @package LineAgent\Reply
- * @version 0.1.0
+ * @version 0.2.0
  */
 class Replier {
 
   /**
-   * @var [mixed] The authentication for connecting to LINE server
+   * @var [mixed] The authentication to connect to LINE server
    */
-  protected $auth;
+  protected $accessToken;
 
   /**
    * @var [mixed] The content section of the converted data from LINE server
    */
-  protected $lineContent;
+  protected $eventData;
 
   /**
    * @var [boolean]
@@ -30,9 +30,9 @@ class Replier {
    * Constructor.
    * @param [mixed] $lineContent - The content section of the converted data from LINE server
    */
-  function __construct($auth, $lineContent) {
-    $this->lineContent = $lineContent;
-    $this->auth = $auth;
+  function __construct($accessToken, $eventData) {
+    $this->eventData = $eventData;
+    $this->accessToken = $accessToken;
   }
 
   /**

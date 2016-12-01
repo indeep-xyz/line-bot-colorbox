@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/sender.php');
  *
  * @author  indeep-xyz
  * @package LineAgent\Send
- * @version 0.1.0
+ * @version 0.2.0
  */
 class ErrorSender extends Sender {
 
@@ -17,19 +17,26 @@ class ErrorSender extends Sender {
     parent::__construct($auth);
   }
 
-  public function send($to, $colorPhrase) {
-    $body = $this->createPostBody($to, $colorPhrase);
+  public function send($replyToken, $colorPhrase) {
+    $body = $this->createPostBody($replyToken, $colorPhrase);
     $this->sendByCurl($body);
   }
 
-  public function createPostBody($to, $colorPhrase) {
-    $text = $this->createPostText($colorPhrase);
-    $body = $this->createPostBodyTemplate($to);
-
-    $body['content']['contentType'] = 1;
-    $body['content']['text'] = $text;
+  public function createPostBody($replyToken, $colorPhrase) {
+    $body = $this->createPostBodyTemplate($replyToken);
+    $this->addMessage($body, $colorPhrase);
 
     return $body;
+  }
+
+  private function addMessage(&$body, $colorPhrase) {
+    $errorMessage = $this->createPostText($colorPhrase);
+
+    array_push($body['messages'], [
+        'type' => 'text',
+        'text' => $errorMessage,
+        ]
+    );
   }
 
   /**

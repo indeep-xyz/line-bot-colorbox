@@ -7,12 +7,12 @@ namespace LineAgent;
  *
  * @author  indeep-xyz
  * @package LineAgent
- * @version 0.1.0
+ * @version 0.2.0
  */
 class Parser {
 
-  const EVENT_TYPE_MESSAGE   = '138311609000106303';
-  const EVENT_TYPE_OPERATION = '138311609100106403';
+  const EVENT_TYPE_MESSAGE   = 'message';
+  // const EVENT_TYPE_OPERATION = '138311609100106403';
 
   /**
    * @var [string] The raw JSON string sent from LINE server
@@ -43,19 +43,25 @@ class Parser {
 
   public function getContent() {
     return ($this->isParsed())
-        ? $this->converted->result[0]->content
+        ? $this->converted->events[0]->content
         : null;
   }
 
-  public function getData() {
+  public function getEventDataArray() {
     return ($this->isParsed())
-        ? $this->converted
+        ? $this->converted->events
         : null;
   }
 
   public function getEventType() {
     return ($this->isParsed())
-        ? $this->converted->result[0]->eventType
+        ? $this->converted->events[0]->type
+        : null;
+  }
+
+  public function getReplyToken() {
+    return ($this->isParsed())
+        ? $this->converted->events[0]->replyToken
         : null;
   }
 

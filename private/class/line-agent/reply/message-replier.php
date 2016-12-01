@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/../send/message-sender.php');
  *
  * @author  indeep-xyz
  * @package LineAgent\Reply
- * @version 0.1.0
+ * @version 0.2.0
  */
 class MessageReplier extends Replier {
 
@@ -28,11 +28,11 @@ class MessageReplier extends Replier {
 
   /**
    * Constructor.
-   * @param [mixed] $lineContent - The content section of the converted data from LINE server
+   * @param [mixed] $eventData - The events section of the data from LINE server
    * @param [string] $urlColorBox - The URL to return an image as a box
    */
-  function __construct($auth, $lineContent, $urlColorBox) {
-    parent::__construct($auth, $lineContent);
+  function __construct($accessToken, $eventData, $urlColorBox) {
+    parent::__construct($accessToken, $eventData);
     $this->urlColorBox = $urlColorBox;
   }
 
@@ -41,7 +41,7 @@ class MessageReplier extends Replier {
    * @return [ColorManager] An instance
    */
   private function createColorManager() {
-    $colorSource = $this->lineContent->text;
+    $colorSource = $this->eventData->message->text;
     return new \ColorBox\ColorManager($colorSource);
   }
 
@@ -68,8 +68,8 @@ class MessageReplier extends Replier {
    * Check an instance has the address of sender.
    * @return [boolean] Returns true if an instance has it.
    */
-  public function hasFrom() {
-    return ($this->lineContent->from != null);
+  public function hasReplyToken() {
+    return ($this->eventData->replyToken != null);
   }
 
   /**
@@ -77,21 +77,21 @@ class MessageReplier extends Replier {
    * @param [ColorManager] colorManager - An instance
    */
   private function sendWithColorBox($colorManager) {
-    $from = $this->lineContent->from;
+    $replyToken = $this->eventData->replyToken;
 
     $sender = $this->createMessageSender();
-    $sender->send($from, $colorManager);
+    $sender->send($replyToken, $colorManager);
   }
 
   /**
    * Send failure message to LINE server.
    */
   private function sendFailureMessage() {
-    $to = $this->lineContent->from;
-    $colorPhrase = $this->lineContent->text;
+    $replyToken = $this->eventData->replyToken;
+    $colorPhrase = $this->eventData->message->text;
 
     $sender = $this->createErrorSender();
-    $sender->send($to, $colorPhrase);
+    $sender->send($replyToken, $colorPhrase);
   }
 
   /**
@@ -114,10 +114,10 @@ class MessageReplier extends Replier {
    * @param [ColorManager] colorManager - An instance
    */
   private function printBodyWithColorBox($colorManager) {
-    $to = $this->lineContent->from;
+    $replyToken = $this->eventData->replyToken;
 
     $sender = $this->createMessageSender();
-    $postBody = $sender->createPostBody($to, $colorManager);
+    $postBody = $sender->createPostBody($replyToken, $colorManager);
 
     echo json_encode($postBody);
   }
@@ -127,21 +127,21 @@ class MessageReplier extends Replier {
    * when error occurred.
    */
   private function printBodyFailureMessage() {
-    $to = $this->lineContent->from;
-    $colorPhrase = $this->lineContent->text;
+    $replyToken = $this->eventData->replyToken;
+    $colorPhrase = $this->eventData->message->text;
 
     $sender = $this->createErrorSender();
-    $postBody = $sender->createPostBody($to, $colorPhrase);
+    $postBody = $sender->createPostBody($replyToken, $colorPhrase);
 
     echo json_encode($postBody);
   }
 
   private function createErrorSender() {
-    return new Send\ErrorSender($this->auth);
+    return new Send\ErrorSender($this->accessToken);
   }
 
   private function createMessageSender() {
-    return new Send\MessageSender($this->auth, $this->urlColorBox);
+    return new Send\MessageSender($this->accessToken, $this->urlColorBox);
   }
 
 }

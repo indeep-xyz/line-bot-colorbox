@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/sender.php');
  *
  * @author  indeep-xyz
  * @package LineAgent\Send
- * @version 0.1.0
+ * @version 0.2.0
  */
 class MessageSender extends Sender {
 
@@ -20,19 +20,27 @@ class MessageSender extends Sender {
     $this->url = $url;
   }
 
-  public function send($to, $colorManager) {
-    $body = $this->createPostBody($to, $colorManager);
+  public function send($replyToken, $colorManager) {
+    $body = $this->createPostBody($replyToken, $colorManager);
     $this->sendByCurl($body);
   }
 
-  public function createPostBody($to, $colorManager) {
-    $body = $this->createPostBodyTemplate($to);
-
-    $body['content']['contentType'] = 2;
-    $body['content']['originalContentUrl'] = $this->createImageUrl($colorManager);
-    $body['content']['previewImageUrl'] = $this->createImageUrl($colorManager);
+  public function createPostBody($replyToken, $colorManager) {
+    $body = $this->createPostBodyTemplate($replyToken);
+    $this->addMessage($body, $colorManager);
 
     return $body;
+  }
+
+  private function addMessage(&$body, $colorManager) {
+    $imageUrl = $this->createImageUrl($colorManager);
+
+    array_push($body['messages'], [
+        'type' => 'image',
+        'originalContentUrl' => $imageUrl,
+        'previewImageUrl' => $imageUrl,
+        ]
+    );
   }
 
   private function createImageUrl($colorManager) {

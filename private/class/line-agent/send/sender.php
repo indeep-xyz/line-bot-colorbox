@@ -7,42 +7,19 @@ namespace LineAgent\Send;
  *
  * @author  indeep-xyz
  * @package LineAgent\Send
- * @version 0.1.0
+ * @version 0.2.0
  */
 abstract class Sender {
 
-  const LINE_API_URL = 'https://trialbot-api.line.me/v1/events';
-  const LINE_TO_CHANNEL = 1383378250;
-  const LINE_EVENT_TYPE = '138311608800106203';
+  const LINE_API_URL = 'https://api.line.me/v2/bot/message/reply';
 
   /**
-   * [
-   *    channelId:
-   *    channelSecret:
-   *    mid:
-   * ]
-   * @var [mixed[]] The parameters for authentification.
+   * @var [string] The parameters for authentification.
    */
-  private $auth;
+  private $accessToken;
 
-  function __construct($auth) {
-    $this->auth = $auth;
-  }
-
-  private function validateAuthHash($auth) {
-    $requirements = [
-        'channelId',
-        'channelSecret',
-        'mid',
-    ];
-
-    foreach ($requirements as $key) {
-      if (!array_key_exists($key, $auth)) {
-        exit;
-      }
-    }
-
-    $this->auth = $auth;
+  function __construct($accessToken) {
+    $this->accessToken = $accessToken;
   }
 
   protected function sendByCurl($body) {
@@ -59,23 +36,15 @@ abstract class Sender {
 
   private function createHeader() {
     return array(
-        'Content-Type: application/json; charser=UTF-8',
-        'X-Line-ChannelID: '             . $this->auth['channelId'],
-        'X-Line-ChannelSecret: '         . $this->auth['channelSecret'],
-        'X-Line-Trusted-User-With-ACL: ' . $this->auth['mid'],
+        'Content-Type:application/json',
+        'Authorization: Bearer ' . $this->accessToken,
     );
   }
 
-  public function createPostBodyTemplate($to) {
+  public function createPostBodyTemplate($replyToken) {
     return [
-        'to' => [$to],
-        'toChannel' => self::LINE_TO_CHANNEL,
-        'eventType' => self::LINE_EVENT_TYPE,
-        'content' => [
-            'contentType' => 1,
-            'toType' => 1,
-            'text' => null,
-        ],
+        'replyToken' => $replyToken,
+        'messages' => [],
     ];
   }
 

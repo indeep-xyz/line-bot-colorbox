@@ -10,28 +10,15 @@ require_once(dirname(__FILE__) . '/reply/message-replier.php');
  *
  * @author  indeep-xyz
  * @package LineAgent
- * @version 0.1.0
+ * @version 0.2.0
  */
 class Reception {
 
+  private $accessToken = __LINE_CHANNEL_ACCESS_TOKEN__;
+  private $urlColorBox = __URL_COLOR_BOX__;
+
   function __construct($rawStringFromLine) {
-    $this->validateDefinitions();
     $this->parser = new Parser($rawStringFromLine);
-  }
-
-  private function validateDefinitions() {
-    $definitions = array(
-        '__LINE_CHANNEL_ID__',
-        '__LINE_CHANNEL_SECRET__',
-        '__LINE_TRUSTED_USER_WITH_ACL__',
-        '__URL_COLOR_BOX__',
-    );
-
-    foreach ($definitions as $def) {
-      if (!defined($def)) {
-        exit;
-      }
-    }
   }
 
   public function getReplier() {
@@ -42,35 +29,29 @@ class Reception {
        case Parser::EVENT_TYPE_MESSAGE:
          $result = $this->createMessageReplier();
          break;
-       case Parser::EVENT_TYPE_OPERATION:
-         $result = $this->createOperationReplier();
-         break;
+       // case Parser::EVENT_TYPE_OPERATION:
+       //   $result = $this->createOperationReplier();
+       //   break;
     }
 
     return $result;
   }
 
   private function createMessageReplier() {
-    $auth = $this->createAuthArray();
-    $content = $this->parser->getContent();
+    $accessToken = $this->accessToken;
+    $getEventDataArray = $this->parser->getEventDataArray();
 
-    return new Reply\MessageReplier($auth, $content, __URL_COLOR_BOX__);
+    return new Reply\MessageReplier(
+        $this->accessToken,
+        $getEventDataArray[0],
+        $this->urlColorBox);
   }
 
   private function createOperationReplier() {
-    $auth = $this->createAuthArray();
-    $content = $this->parser->getContent();
-    // $replier = new Reply\OperationeReplier($content);
+    $accessToken = $this->accessToken;
+    $getEventDataArray = $this->parser->getEventDataArray();
+    // $replier = new Reply\OperationeReplier($getEventDataArray);
 
     return $replier;
   }
-
-  private function createAuthArray() {
-    return [
-        'channelId'     => __LINE_CHANNEL_ID__,
-        'channelSecret' => __LINE_CHANNEL_SECRET__,
-        'mid'           => __LINE_TRUSTED_USER_WITH_ACL__,
-    ];
-  }
-
 }
