@@ -14,7 +14,7 @@ require_once(dirname(__FILE__) . '/../send/message-sender.php');
  *
  * @author  indeep-xyz
  * @package LineAgent\Reply
- * @version 0.2.0
+ * @version 0.2.1
  */
 class MessageReplier extends Replier {
 
@@ -22,18 +22,12 @@ class MessageReplier extends Replier {
   private $color;
 
   /**
-   * @var [string] The URL to return an image as a box
-   */
-  private $urlColorBox;
-
-  /**
    * Constructor.
    * @param [mixed] $eventData - The events section of the data from LINE server
-   * @param [string] $urlColorBox - The URL to return an image as a box
+   * @param [mixed] $options - Options to run
    */
-  function __construct($accessToken, $eventData, $urlColorBox) {
-    parent::__construct($accessToken, $eventData);
-    $this->urlColorBox = $urlColorBox;
+  function __construct($eventData, $options) {
+    parent::__construct($eventData, $options);
   }
 
   /**
@@ -48,8 +42,8 @@ class MessageReplier extends Replier {
   /**
    * Send message to LINE server.
    */
-  public function send() {
-    if ($this->dryRun) {
+  public function reply() {
+    if ($this->options['dryRun']) {
       $this->printBody();
       return;
     }
@@ -137,11 +131,14 @@ class MessageReplier extends Replier {
   }
 
   private function createErrorSender() {
-    return new Send\ErrorSender($this->accessToken);
+    return new Send\ErrorSender(
+        $this->options['accessToken']);
   }
 
   private function createMessageSender() {
-    return new Send\MessageSender($this->accessToken, $this->urlColorBox);
+    return new Send\MessageSender(
+        $this->options['accessToken'],
+        $this->options['urlColorBox']);
   }
 
 }

@@ -2,56 +2,61 @@
 
 namespace LineAgent;
 
-require_once(dirname(__FILE__) . '/parser.php');
-require_once(dirname(__FILE__) . '/reply/message-replier.php');
+require_once(dirname(__FILE__) . '/reply/replier-factory.php');
 
 /**
  * The class is a reception for the message sent from LINE server.
  *
  * @author  indeep-xyz
  * @package LineAgent
- * @version 0.2.0
+ * @version 0.2.1
  */
 class Reception {
 
-  private $accessToken = __LINE_CHANNEL_ACCESS_TOKEN__;
-  private $urlColorBox = __URL_COLOR_BOX__;
+  /**
+   * Options to run.
+   * @var [mixed]
+   * @var [string] $options['accessToken'] - The authentication to connect to LINE server
+   * @var [string] $options['urlColorBox'] - The URL to return an image as a box
+   * @var [string] $options['dryRun'] - Dry-run mode when it is truthy
+   */
+  private $options;
 
-  function __construct($rawStringFromLine) {
-    $this->parser = new Parser($rawStringFromLine);
+  /**
+   * The raw string sent from LINE server.
+   * @var [string]
+   */
+  private $raw;
+
+  /**
+   * Constructor.
+   * @param [string] $raw - The raw string sent from LINE server
+   * @param [mixed] $options - Options to run
+   */
+  function __construct($raw, $options) {
+    $this->raw = $raw;
+    $this->options = $options;
   }
 
-  public function getReplier() {
-    $result = null;
-    $eventType = $this->parser->getEventType();
+  /**
+   * Run events in data sent from LINE server.
+   */
+  public function runEvents() {
+    $repliers = $this->createRepliers();
 
-    switch ($eventType) {
-       case Parser::EVENT_TYPE_MESSAGE:
-         $result = $this->createMessageReplier();
-         break;
-       // case Parser::EVENT_TYPE_OPERATION:
-       //   $result = $this->createOperationReplier();
-       //   break;
+    foreach ($repliers as $replier) {
+      $replier->reply();
     }
-
-    return $result;
   }
 
-  private function createMessageReplier() {
-    $accessToken = $this->accessToken;
-    $getEventDataArray = $this->parser->getEventDataArray();
-
-    return new Reply\MessageReplier(
-        $this->accessToken,
-        $getEventDataArray[0],
-        $this->urlColorBox);
-  }
-
-  private function createOperationReplier() {
-    $accessToken = $this->accessToken;
-    $getEventDataArray = $this->parser->getEventDataArray();
-    // $replier = new Reply\OperationeReplier($getEventDataArray);
-
-    return $replier;
+  /**
+   * Create instances of kind of the class Replier.
+   * The kind of each instance depends on the parameter "type" of
+   * the event data sent from LINE server.
+   * @return [array<Replier>] Instances of kind of the class Replier
+   */
+  private function createRepliers() {
+    $factory = new Reply\ReplierFactory($this->raw, $this->options);
+    return $factory->createRepliers();
   }
 }

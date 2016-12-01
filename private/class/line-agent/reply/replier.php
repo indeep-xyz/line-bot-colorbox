@@ -7,39 +7,26 @@ namespace LineAgent\Reply;
  *
  * @author  indeep-xyz
  * @package LineAgent\Reply
- * @version 0.2.0
+ * @version 0.2.1
  */
 class Replier {
 
   /**
-   * @var [mixed] The authentication to connect to LINE server
+   * Options to run.
+   * @var [mixed]
+   * @var [string] $options['accessToken'] - The authentication to connect to LINE server
+   * @var [string] $options['urlColorBox'] - The URL to return an image as a box
+   * @var [string] $options['dryRun'] - Dry-run mode when it is truthy
    */
-  protected $accessToken;
-
-  /**
-   * @var [mixed] The content section of the converted data from LINE server
-   */
-  protected $eventData;
-
-  /**
-   * @var [boolean]
-   */
-  protected $dryRun;
+  protected $options;
 
   /**
    * Constructor.
    * @param [mixed] $lineContent - The content section of the converted data from LINE server
+   * @param [mixed] $options - Options to run
    */
-  function __construct($accessToken, $eventData) {
+  function __construct($eventData, $options) {
     $this->eventData = $eventData;
-    $this->accessToken = $accessToken;
-  }
-
-  /**
-   * Set dry-run mode.
-   * @param [boolean] $bool - Set dry-run mode when it is true
-   */
-  public function setDryRun($bool) {
-    $this->dryRun = $bool || false;
+    $this->options = $options;
   }
 }
