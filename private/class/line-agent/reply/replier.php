@@ -7,9 +7,9 @@ namespace LineAgent\Reply;
  *
  * @author  indeep-xyz
  * @package LineAgent\Reply
- * @version 0.2.1
+ * @version 0.2.2
  */
-class Replier {
+abstract class Replier {
 
   /**
    * Options to run.
@@ -29,4 +29,10 @@ class Replier {
     $this->eventData = $eventData;
     $this->options = $options;
   }
+
+  /**
+   * Reply message according to the event type to LINE server.
+   */
+  abstract public function reply();
+
 }
