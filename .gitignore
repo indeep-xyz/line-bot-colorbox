@@ -5,6 +5,7 @@
 # private files
 /profile.png
 private/config.php
+private/log
 private/lib/*/*
 !private/lib/*/.gitkeep
 /*.sublime-*
