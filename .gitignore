@@ -1,14 +1,16 @@
-# Vagrant files
+# Vagrant settings
 /.vagrant
 /Vagrantfile
 
-# private files
-/profile.png
-private/config.php
-private/lib/*/*
-!private/lib/*/.gitkeep
+# Sublime Text settings
 /*.sublime-*
 
 # log files
-private/log
-**/MyLocalLogger/config.xml
+/private/log
+
+# other private files
+/profile.png
+/private/config.php
+/private/lib/MyLocalLogger
+/private/lib/*/*
+!/private/lib/*/.gitkeep
