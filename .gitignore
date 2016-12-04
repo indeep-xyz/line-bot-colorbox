@@ -5,7 +5,10 @@
 # private files
 /profile.png
 private/config.php
-private/log
 private/lib/*/*
 !private/lib/*/.gitkeep
 /*.sublime-*
+
+# log files
+private/log
+**/MyLocalLogger/config.xml
