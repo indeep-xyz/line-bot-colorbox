@@ -28,8 +28,12 @@ class ColorBoxSender
    * @param [mixed] $options - Options to run
    */
   function __construct(array $options) {
+    \MyLocalLogger\Write::journal('IN');
+
     parent::__construct($options);
     $this->setUrlColorBox($options);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -37,6 +41,8 @@ class ColorBoxSender
    * @param [mixed] &$options - Options expected to include the item "urlColorBox".
    */
   private function setUrlColorBox(array &$options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $key = 'urlColorBox';
 
     if (array_key_exists($key, $options)) {
@@ -44,9 +50,13 @@ class ColorBoxSender
       unset($options[$key]);
     }
     else {
-      throw new InvalidArgumentException(
-          'Require an URL which returns a colored box image.');
+      $message = 'Require an URL which returns a colored box image.';
+
+      \MyLocalLogger\Write::error($message);
+      throw new InvalidArgumentException($message);
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -57,6 +67,8 @@ class ColorBoxSender
    * @param [ColorManager] $colorManager - Color data
    */
   public function run($replyToken, $colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $body = $this->createPostBody($replyToken, $colorManager);
 
     if ($this->dryRun) {
@@ -65,6 +77,8 @@ class ColorBoxSender
     else {
       $this->sendByCurl($body);
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -74,9 +88,13 @@ class ColorBoxSender
    * @return [string] The body section of POST
    */
   public function createPostBody($replyToken, $colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $body = $this->createPostBodyTemplate($replyToken);
     $this->addMessage($body, $colorManager);
 
+
+    \MyLocalLogger\Write::journal('OUT');
     return $body;
   }
 
@@ -87,6 +105,8 @@ class ColorBoxSender
    * @param [ColorManager] $colorManager - Color data
    */
   protected function addMessage(array &$body, $colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $imageUrl = $this->createImageUrl($colorManager);
 
     parent::addMessage($body, [
@@ -95,6 +115,8 @@ class ColorBoxSender
         'previewImageUrl' => $imageUrl,
         ]
     );
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -103,8 +125,12 @@ class ColorBoxSender
    * @param [ColorManager] $colorManager - Color data
    */
   private function send($replyToken, $colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $body = $this->createPostBody($replyToken, $colorManager);
     $this->sendByCurl($body);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -113,10 +139,15 @@ class ColorBoxSender
    * @return [string] An url which displays a colored box image
    */
   private function createImageUrl($colorManager) {
-    return sprintf(
+    \MyLocalLogger\Write::journal('IN');
+
+    $urlWithQueryString = sprintf(
         '%s?color=%s',
         $this->urlColorBox,
         urlencode($colorManager->getColorAsString())
     );
+
+    \MyLocalLogger\Write::journal('OUT');
+    return $urlWithQueryString;
   }
 }

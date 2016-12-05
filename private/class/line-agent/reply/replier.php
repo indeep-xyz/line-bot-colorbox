@@ -26,8 +26,12 @@ abstract class Replier {
    * @param [mixed] $options - Options to run
    */
   function __construct($eventData, $options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->eventData = $eventData;
     $this->options = $options;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**

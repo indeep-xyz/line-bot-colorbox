@@ -31,8 +31,12 @@ class ReplierFactory {
   private $events;
 
   function __construct($raw, $options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->initializeEvents($raw);
     $this->options = $options;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -40,8 +44,12 @@ class ReplierFactory {
    * @param [string] $rawJSON - The raw JSON sent from LINE server
    */
   private function initializeEvents($raw) {
+    \MyLocalLogger\Write::journal('IN');
+
     $converted = json_decode($raw);
     $this->events = $converted->events;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -51,6 +59,8 @@ class ReplierFactory {
    * @return [array<Replier>] Instances of kind of the class Replier
    */
   public function createRepliers() {
+    \MyLocalLogger\Write::journal('IN');
+
     $repliers = [];
 
     foreach ($this->events as $event) {
@@ -61,6 +71,7 @@ class ReplierFactory {
       }
     }
 
+    \MyLocalLogger\Write::journal('OUT');
     return $repliers;
   }
 
@@ -72,13 +83,18 @@ class ReplierFactory {
    * @return [Replier] An instance of kind of the class Replier
    */
   public function createReplier($event) {
+    \MyLocalLogger\Write::journal('IN');
+
+    $replier = null;
+
     switch ($event->type) {
        case self::EVENT_TYPE_MESSAGE:
-         return new MessageReplier($event, $this->options);
+         $replier = new MessageReplier($event, $this->options);
        // case self::EVENT_TYPE_OPERATION:
-       //   return new OperationeReplier($event, $this->options);
+       //   $replier = new OperationeReplier($event, $this->options);
     }
 
-    return null;
+    \MyLocalLogger\Write::journal('OUT');
+    return $replier;
   }
 }

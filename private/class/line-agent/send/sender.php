@@ -43,8 +43,12 @@ abstract class Sender {
    * @param [mixed] $options - Options to run
    */
   function __construct(array &$options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->setAccessToken($options);
     $this->setDryRun($options);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -52,6 +56,8 @@ abstract class Sender {
    * @param [mixed] &$options - Options expected to include the item "accessToken".
    */
   private function setAccessToken(array &$options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $key = 'accessToken';
 
     if (array_key_exists($key, $options)) {
@@ -59,9 +65,13 @@ abstract class Sender {
       unset($options[$key]);
     }
     else {
-      throw new InvalidArgumentException(
-          'Require an access token to connect to LINE server.');
+      $message = 'Require an access token to connect to LINE server.';
+
+      \MyLocalLogger\Write::error($message);
+      throw new InvalidArgumentException($message);
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -69,12 +79,16 @@ abstract class Sender {
    * @param [mixed] &$options - Options expected to include the item "dryRun".
    */
   private function setDryRun(array &$options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $key = 'dryRun';
 
     if (array_key_exists($key, $options)) {
       $this->$key = $options[$key];
       unset($options[$key]);
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -82,6 +96,8 @@ abstract class Sender {
    * @param  [mixed] $body - The body of POST
    */
   protected function sendByCurl(array $body) {
+    \MyLocalLogger\Write::journal('IN');
+
     $ch = curl_init(self::LINE_API_URL);
     curl_setopt($ch, CURLOPT_POST, true);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
@@ -90,7 +106,11 @@ abstract class Sender {
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body));
 
     $result = curl_exec($ch);
+    \MyLocalLogger\Write::output('Sent to LINE server', json_encode(curl_getinfo($ch)));
+
     curl_close($ch);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -122,7 +142,11 @@ abstract class Sender {
    * @param [undefined] $item - Additional data into the body
    */
   protected function addMessage(array &$body, $item) {
+    \MyLocalLogger\Write::journal('IN');
+
     array_push($body['messages'], $item);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**

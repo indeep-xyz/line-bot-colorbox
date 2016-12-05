@@ -26,13 +26,19 @@ class MessageReplier
    * @param [mixed] $options - Options to run
    */
   function __construct($eventData, $options) {
+    \MyLocalLogger\Write::journal('IN');
+
     parent::__construct($eventData, $options);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
    * Reply message to LINE server.
    */
   public function reply() {
+    \MyLocalLogger\Write::journal('IN');
+
     $colorManager = $this->createColorManager();
 
     if ($colorManager->isCreatedColor()) {
@@ -41,6 +47,8 @@ class MessageReplier
     else {
       $this->sendFailureMessage($colorManager);
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -48,8 +56,13 @@ class MessageReplier
    * @return [ColorManager] An instance
    */
   private function createColorManager() {
+    \MyLocalLogger\Write::journal('IN');
+
     $colorSource = $this->eventData->message->text;
-    return new \ColorBox\ColorManager($colorSource);
+    $colorManager = new \ColorBox\ColorManager($colorSource);
+
+    \MyLocalLogger\Write::journal('OUT');
+    return $colorManager;
   }
 
   /**
@@ -57,10 +70,14 @@ class MessageReplier
    * @param [ColorManager] colorManager - An instance
    */
   private function sendWithColorBox($colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $replyToken = $this->eventData->replyToken;
 
     $sender = new Send\ColorBoxSender($this->options);
     $sender->run($replyToken, $colorManager);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -68,9 +85,13 @@ class MessageReplier
    * @param [ColorManager] colorManager - An instance
    */
   private function sendFailureMessage($colorManager) {
+    \MyLocalLogger\Write::journal('IN');
+
     $replyToken = $this->eventData->replyToken;
 
     $sender = new Send\ColorErrorSender($this->options);
     $sender->run($replyToken, $colorManager);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 }

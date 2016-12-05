@@ -34,19 +34,27 @@ class Reception {
    * @param [mixed] $options - Options to run
    */
   function __construct($raw, $options) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->raw = $raw;
     $this->options = $options;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
    * Run events in data sent from LINE server.
    */
   public function runEvents() {
+    \MyLocalLogger\Write::journal('IN');
+
     $repliers = $this->createRepliers();
 
     foreach ($repliers as $replier) {
       $replier->reply();
     }
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -56,7 +64,12 @@ class Reception {
    * @return [array<Replier>] Instances of kind of the class Replier
    */
   private function createRepliers() {
+    \MyLocalLogger\Write::journal('IN');
+
     $factory = new Reply\ReplierFactory($this->raw, $this->options);
-    return $factory->createRepliers();
+    $repliers = $factory->createRepliers();
+
+    \MyLocalLogger\Write::journal('OUT');
+    return $repliers;
   }
 }
