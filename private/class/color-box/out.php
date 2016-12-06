@@ -7,7 +7,7 @@ require_once(dirname(__FILE__) . '/color-manager.php');
 /**
  * This class outputs a color box.
  *
- * @version  0.0.1
+ * @version  0.0.2
  * @author   indeep-xyz
  * @package  ColorBox
  */
@@ -29,27 +29,39 @@ class Out {
   private $color;
 
   function __construct($color) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->color = $color;
     $this->initBox();
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
    * Initialize an image which an instance has.
    */
   private function initBox() {
+    \MyLocalLogger\Write::journal('IN');
+
     $box = new \Imagick();
     $box->newImage(self::SIZE, self::SIZE, $this->color);
     $box->setImageFormat(self::FILE_TYPE);
 
     $this->box = $box;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
    * Output an image which an instance has.
    */
   public function output() {
+    \MyLocalLogger\Write::journal('IN');
+
     header(self::CONTENT_TYPE);
     echo $this->box;
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**

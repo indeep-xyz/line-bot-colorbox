@@ -5,7 +5,7 @@ namespace ColorBox;
 /**
  * This class supports to optimize a phrase for color code.
  *
- * @version  0.0.1
+ * @version  0.0.2
  * @author   indeep-xyz
  * @package  ColorBox
  */
@@ -21,7 +21,11 @@ class PhraseOptimizer {
    * @param [string] $source - The source for optimization
    */
   function __construct($source) {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->source = $this->removeWhiteSpace($source);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -39,10 +43,13 @@ class PhraseOptimizer {
    * @return [string] Returns the optimized string
    */
   public function fromQueryString() {
+    \MyLocalLogger\Write::journal('IN');
+
     $source = $this->source;
     $source = urldecode($source);
     $source = $this->convertToHexColor($source);
 
+    \MyLocalLogger\Write::journal('OUT');
     return $source;
   }
 
@@ -53,12 +60,15 @@ class PhraseOptimizer {
    * @return [string] Returns the argument as it is
    */
   private function convertToHexColor($source) {
+    \MyLocalLogger\Write::journal('IN');
+
     if ($this->checkHexString($source, 3) ||
         $this->checkHexString($source, 6)
         ) {
       $source = '#' . $source;
     }
 
+    \MyLocalLogger\Write::journal('OUT');
     return $source;
   }
 
@@ -69,8 +79,12 @@ class PhraseOptimizer {
    * @return [boolean] Returns true if $source is hex and has the same length as $length
    */
   private function checkHexString($source, $length) {
-    $pattern = '/^[0-9a-f]{' . $length . '}$/i';
+    \MyLocalLogger\Write::journal('IN');
 
-    return (preg_match($pattern, $source) != 0);
+    $pattern = '/^[0-9a-f]{' . $length . '}$/i';
+    $hexString = (preg_match($pattern, $source) != 0);
+
+    \MyLocalLogger\Write::journal('OUT');
+    return $hexString;
   }
 }

@@ -7,7 +7,7 @@ require_once(dirname(__FILE__) . '/phrase-optimizer.php');
 /**
  * This class keeps color data.
  *
- * @version  0.0.1
+ * @version  0.0.2
  * @author   indeep-xyz
  * @package  ColorBox
  */
@@ -30,8 +30,13 @@ class ColorManager {
    * @param [string] $colorSource - A color code
    */
   function __construct($colorSource) {
+    \MyLocalLogger\Write::journal('IN');
+    \MyLocalLogger\Write::input('Color Source', $colorSource);
+
     $this->colorSource = $colorSource;
     $this->initColor();
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -44,7 +49,11 @@ class ColorManager {
    * when the instance creation is failed.
    */
   private function initColor() {
+    \MyLocalLogger\Write::journal('IN');
+
     $this->color = $this->createPixel($this->colorSource);
+
+    \MyLocalLogger\Write::journal('OUT');
   }
 
   /**
@@ -54,6 +63,8 @@ class ColorManager {
    * @return [null] Returns null if a class can not optimize the argument
    */
   private function createPixel($colorSource) {
+    \MyLocalLogger\Write::journal('IN');
+
     $phraseOptimizer = new PhraseOptimizer($colorSource);
     $colorPhrase = $phraseOptimizer->fromQueryString();
     $color = null;
@@ -61,12 +72,25 @@ class ColorManager {
     if ($colorPhrase != '') {
       try {
         $color = new \ImagickPixel($colorPhrase);;
+        \MyLocalLogger\Write::debug(
+            sprintf(
+                'Create a color %s from a color source "%s"',
+                $color->getColorAsString(),
+                $colorSource
+            )
+        );
       }
       catch (\ImagickPixelException $ex) {
-        ;
+        \MyLocalLogger\Write::debug(
+            sprintf(
+                'Failed to create from a color source "%s"',
+                $colorSource
+            )
+        );
       }
     }
 
+    \MyLocalLogger\Write::journal('OUT');
     return $color;
   }
 
@@ -84,11 +108,16 @@ class ColorManager {
    * @return [null] Returns null if $this->color is not created
    */
   public function getColorAsString() {
+    \MyLocalLogger\Write::journal('IN');
+
+    $colorAsString = null;
+
     if ($this->isCreatedColor()) {
-      return $this->color->getColorAsString();
+      $colorAsString = $this->color->getColorAsString();
     }
 
-    return null;
+    \MyLocalLogger\Write::journal('OUT');
+    return $colorAsString;
   }
 
   /**
