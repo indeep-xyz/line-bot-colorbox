@@ -5,15 +5,26 @@ namespace ColorBox;
 require_once(dirname(__FILE__) . '/color-manager.php');
 
 /**
- * This class outputs a color box.
+ * This class outputs an image data as a colored box.
  *
  * @version  0.0.2
  * @author   indeep-xyz
  * @package  ColorBox
  */
 class Out {
+  /**
+   * Size of image data, width and height.
+   */
   const SIZE = 120;
+
+  /**
+   * Format of image data.
+   */
   const FILE_TYPE = 'png';
+
+  /**
+   * A content type when an instance outputs image data.
+   */
   const CONTENT_TYPE = 'Content-type: image/png';
 
   /**
@@ -28,6 +39,10 @@ class Out {
    */
   private $color;
 
+  /**
+   * Constructor.
+   * @param [ImagickPixel] $color - Color data
+   */
   function __construct($color) {
     \MyLocalLogger\Write::journal('IN');
 
@@ -38,7 +53,8 @@ class Out {
   }
 
   /**
-   * Initialize an image which an instance has.
+   * Initialize image data from color data
+   * kept by an instance of this.
    */
   private function initBox() {
     \MyLocalLogger\Write::journal('IN');
@@ -53,7 +69,7 @@ class Out {
   }
 
   /**
-   * Output an image which an instance has.
+   * Output image data kept by an instance of this.
    */
   public function output() {
     \MyLocalLogger\Write::journal('IN');
