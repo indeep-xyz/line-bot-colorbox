@@ -3,7 +3,7 @@
 require_once('../private/commons.php');
 require_once(__CLASS_ROOT__ . '/line-agent/reception.php');
 
-\MyLocalLogger\Write::journal('------ START ------');
+\MyLocalLogger\Write::journal('------ START (' . basename(__FILE__) . ') ------');
 
 try {
   $jsonSource = file_get_contents("php://input");
@@ -29,4 +29,4 @@ catch (Exception $ex) {
   \MyLocalLogger\Write::error('Something error', $ex);
 }
 
-\MyLocalLogger\Write::journal('------- END -------');
+\MyLocalLogger\Write::journal('------ END (' . basename(__FILE__) . ') ------');
