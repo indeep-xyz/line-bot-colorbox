@@ -3,10 +3,9 @@
 require_once('../private/commons.php');
 require_once(__CLASS_ROOT__ . '/line-agent/reception.php');
 
-\MyLocalLogger\Write::journal('IN');
+\MyLocalLogger\Write::journal('------ START ------');
 
 try {
-
   $jsonSource = file_get_contents("php://input");
   $options = [
     'accessToken' => __LINE_CHANNEL_ACCESS_TOKEN__,
@@ -25,9 +24,9 @@ try {
 
   $reception = new \LineAgent\Reception($jsonSource, $options);
   $reception->runEvents();
-
-} catch (Exception $ex) {
+}
+catch (Exception $ex) {
   \MyLocalLogger\Write::error('Something error', $ex);
 }
 
-\MyLocalLogger\Write::journal('OUT');
+\MyLocalLogger\Write::journal('------- END -------');
