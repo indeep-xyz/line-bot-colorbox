@@ -9,7 +9,7 @@ require_once(dirname(__FILE__) . '/reply/replier-factory.php');
  *
  * @author  indeep-xyz
  * @package LineAgent
- * @version 0.2.1
+ * @version 0.2.2
  */
 class Reception {
 

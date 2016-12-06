@@ -7,7 +7,7 @@ namespace LineAgent\Send;
  *
  * @author  indeep-xyz
  * @package LineAgent\Send
- * @version 0.2.1
+ * @version 0.2.2
  */
 abstract class Sender {
 
