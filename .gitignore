@@ -7,6 +7,7 @@
 
 # log files
 /private/log
+/private/DEBUG_MODE
 
 # other private files
 /profile.png
